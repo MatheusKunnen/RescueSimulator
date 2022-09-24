@@ -1,4 +1,4 @@
-from agentRnd import AgentRnd
+from agentExplorador import AgentExplorador
 from model import Model
 from Configuration import Configuration
 import sys
@@ -59,14 +59,14 @@ def main():
     model.draw()
 
     # Cria um agente
-    agent = AgentRnd(model, config.ambiente)
+    explorador = AgentExplorador(model, config.ambiente)
 
     # Ciclo de raciocínio do agente
-    agent.deliberate()
-    while agent.deliberate() != -1:
+    explorador.deliberate()
+    while explorador.deliberate() != -1:
         model.draw()
         # para dar tempo de visualizar as movimentacoes do agente no labirinto
-        time.sleep(0.3)
+        time.sleep(0.05)
     model.draw()
 
 
