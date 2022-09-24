@@ -79,7 +79,7 @@ class Maze:
                 if j.itemInside == "Parede":
                     pos = j.ide
                     self.walls[pos[0]][pos[1]] = 1
-                elif j.itemInside == "Vitima":
+                elif j.itemInside == "Vitima" or j.itemInside == "Vitimas":
                     pos = j.ide
                     self.numberOfVictims = self.numberOfVictims + 1
                     self.victims[pos[0]][pos[1]] = self.numberOfVictims
@@ -87,7 +87,7 @@ class Maze:
                     vs_line = vs_file.readline()
                     if vs_line:
                         values = [float(signal)
-                                  for signal in vs_line.split(" ")]
+                                  for signal in vs_line.split(",")]
                         print("sinais vitais da vitima em (",
                               pos[0], ",", pos[1], ") : ", values)
                         self.vitalSignals.append([])
