@@ -40,7 +40,7 @@ class Configuration:
         for line in lines:
             self.sinais_vitais.append(
                 [float(x) if i > 0 else int(x) for i, x in enumerate(line.replace('\n', '').replace(' ', '').split(','))])
-        print(self.sinais_vitais)
+        # print(self.sinais_vitais)
 
     def getMaxColumnas(self):
         return self.ambiente.get('XMax')

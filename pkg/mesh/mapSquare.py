@@ -61,6 +61,7 @@ class MapSquare:
             things = {}
             # Le o arquivo
             arq = open(os.path.join("config_data", self.load+".txt"), "r")
+            # arq = open(os.path.join("config_data", self.load+".txt"), "r")
             for line in arq:
                 # O formato de cada linha é:
                 # Nome x,y x,y x,y
@@ -73,10 +74,12 @@ class MapSquare:
                 for j in things[i]:
                     pos = j.split(",")
                     print(pos)
-                    # Define que naquela posicao vai ter determinado objeto
-                    # self.listPlaces[int(pos[0])][int(pos[1])].itemInside = i
-                    # Atualiza a cor do lugar
-                    # self.listPlaces[int(pos[0])][int(pos[1])].updateColor()
+                    if len(pos) > 1:
+                        # Define que naquela posicao vai ter determinado objeto
+                        self.listPlaces[int(pos[0])][int(
+                            pos[1])].itemInside = i
+                        # Atualiza a cor do lugar
+                        self.listPlaces[int(pos[0])][int(pos[1])].updateColor()
 
             # Seta as posicoes do robo e do objetivo
             # if "Agente" in things:
