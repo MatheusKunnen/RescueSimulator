@@ -35,8 +35,9 @@ def main():
 
     #     values = line.split("=")
     #     configDict[values[0]] = int(values[1])
-    config = Configuration("./config_data/tarefa1/ambiente.txt",
-                           "./config_data/tarefa1/sinais_vitais.txt")
+    config = Configuration(
+        "./config_data/tarefa1/ambiente.txt", "./config_data/tarefa1/sinais_vitais.txt"
+    )
     # return
     # print("dicionario config: ", configDict)
 
@@ -46,15 +47,13 @@ def main():
     # nome do arquivo de configuracao do ambiente - deve estar na pasta <proj>/config_data
     loadMaze = "ambiente"
 
-    model = Model(config.getMaxFilas(),
-                  config.getMaxColumnas(), mesh, loadMaze)
+    model = Model(config.getMaxFilas(), config.getMaxColumnas(), mesh, loadMaze)
     buildMaze(model)
 
     model.maze.board.posAgent
     model.maze.board.posGoal
     # Define a posição inicial do agente no ambiente - corresponde ao estado inicial
-    model.setAgentPos(
-        model.maze.board.posAgent[0], model.maze.board.posAgent[1])
+    model.setAgentPos(model.maze.board.posAgent[0], model.maze.board.posAgent[1])
     model.setGoalPos(model.maze.board.posGoal[0], model.maze.board.posGoal[1])
     model.draw()
 
@@ -70,5 +69,5 @@ def main():
     model.draw()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

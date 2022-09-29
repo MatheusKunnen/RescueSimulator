@@ -12,6 +12,7 @@ from problem import Problem
 from state import State
 from random import randint
 from constants import PosType
+
 # Importa o algoritmo para o plano
 from exploradorPlan import ExploradorPlan
 
@@ -26,7 +27,7 @@ class AgentExplorador:
     CUSTO_VITIMA = 2
 
     def __init__(self, model, configDict):
-        """ 
+        """
         Construtor do agente explorador
         @param model referencia o ambiente onde o agente estah situado
         """
@@ -57,11 +58,12 @@ class AgentExplorador:
         # self.prob.defGoalState(randint(0,model.rows-1), randint(0,model.columns-1))
 
         # definimos um estado objetivo que veio do arquivo ambiente.txt
-        self.prob.defGoalState(
-            model.maze.board.posGoal[0], model.maze.board.posGoal[1])
+        self.prob.defGoalState(model.maze.board.posGoal[0], model.maze.board.posGoal[1])
         # print("*** Objetivo do agente: ", self.prob.goalState)
-        print("*** Total de vitimas existentes no ambiente: ",
-              self.model.getNumberOfVictims())
+        print(
+            "*** Total de vitimas existentes no ambiente: ",
+            self.model.getNumberOfVictims(),
+        )
 
         """
         DEFINE OS PLANOS DE EXECUÇÃO DO AGENTE
@@ -71,8 +73,9 @@ class AgentExplorador:
         self.costAll = 0
 
         # Cria a instancia do plano para se movimentar aleatoriamente no labirinto (sem nenhuma acao)
-        self.plan = ExploradorPlan(model.rows, model.columns,
-                                   self.prob.goalState, initial, "goal", self.mesh)
+        self.plan = ExploradorPlan(
+            model.rows, model.columns, self.prob.goalState, initial, "goal", self.mesh
+        )
 
         # adicionar crencas sobre o estado do ambiente ao plano - neste exemplo, o agente faz uma copia do que existe no ambiente.
         # Em situacoes de exploracao, o agente deve aprender em tempo de execucao onde estao as paredes
@@ -120,8 +123,14 @@ class AgentExplorador:
         # Verifica se a execução do acao do ciclo anterior funcionou ou nao
         if not (self.currentState == self.expectedState):
             self.plan.onInvalidAction(self.previousAction)
-            print("---> erro na execucao da acao ", self.previousAction,
-                  ": esperava estar em ", self.expectedState, ", mas estou em ", self.currentState)
+            print(
+                "---> erro na execucao da acao ",
+                self.previousAction,
+                ": esperava estar em ",
+                self.expectedState,
+                ", mas estou em ",
+                self.currentState,
+            )
         else:
             self.plan.onValidAction(self.previousAction)
         # Funcionou ou nao, vou somar o custo da acao com o total
@@ -146,8 +155,12 @@ class AgentExplorador:
         # Define a proxima acao a ser executada
         # currentAction eh uma tupla na forma: <direcao>, <state>
         result = self.plan.chooseAction()
-        print("Ag deliberou pela acao: ",
-              result[0], " o estado resultado esperado é: ", result[1])
+        print(
+            "Ag deliberou pela acao: ",
+            result[0],
+            " o estado resultado esperado é: ",
+            result[1],
+        )
 
         # Executa esse acao, atraves do metodo executeGo
         self.executeGo(result[0])
@@ -158,7 +171,7 @@ class AgentExplorador:
 
     def __checkVitima(self):
         """
-            Verifica se tem vitima na posicao atual
+        Verifica se tem vitima na posicao atual
         """
         victimId = self.victimPresenceSensor()
         if victimId <= 0:
@@ -180,16 +193,23 @@ class AgentExplorador:
         # Adiciona vitima
         self.__vitimas_id.append(victimId)
         self.__vitimas.append(
-            ((self.currentState.row, self.currentState.col), sinais_vitais))
+            ((self.currentState.row, self.currentState.col), sinais_vitais)
+        )
 
-        print("vitima encontrada em ", self.currentState, " id: ", victimId,
-              " sinais vitais: ", sinais_vitais)
+        print(
+            "vitima encontrada em ",
+            self.currentState,
+            " id: ",
+            victimId,
+            " sinais vitais: ",
+            sinais_vitais,
+        )
 
     # Metodo que executa as acoes
     def executeGo(self, action):
         """Atuador: solicita ao agente físico para executar a acao.
         @param direction: Direcao da acao do agente {"N", "S", ...}
-        @return 1 caso movimentacao tenha sido executada corretamente """
+        @return 1 caso movimentacao tenha sido executada corretamente"""
 
         # Passa a acao para o modelo
         result = self.model.go(action)
@@ -209,11 +229,11 @@ class AgentExplorador:
 
     def victimPresenceSensor(self):
         """Simula um sensor que realiza a deteccao de presenca de vitima na posicao onde o agente se encontra no ambiente
-           @return retorna o id da vítima"""
+        @return retorna o id da vítima"""
         return self.model.isThereVictim()
 
     def victimVitalSignalsSensor(self, victimId):
-        """Simula um sensor que realiza a leitura dos sinais da vitima 
+        """Simula um sensor que realiza a leitura dos sinais da vitima
         @param o id da vítima
         @return a lista de sinais vitais (ou uma lista vazia se não tem vítima com o id)"""
         return self.model.getVictimVitalSignals(victimId)
@@ -237,7 +257,7 @@ class AgentExplorador:
 
     def __init_map(self):
         """
-            Inicia matriz do mapa do ambiente
+        Inicia matriz do mapa do ambiente
         """
         self.__map = []
         for _ in range(self.model.rows):

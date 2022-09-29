@@ -46,13 +46,19 @@ class Maze:
             # Cria uma malha com quadradaos
             # Passa a largura e altura que deve ser preenchida por quadrados de determinado lado, a tela, e a posicao inicial para comecar
             # para a malha inteira caber na tela, pegar a menor razao entre altura/linhas e larg/colunas para determinar o tamanho do lado do quadrado
-            rowRate = 600/self.maxRows
-            colRate = 900/self.maxColumns
+            rowRate = 600 / self.maxRows
+            colRate = 900 / self.maxColumns
             side = rowRate
             if colRate < colRate:
                 side = colRate
             self.board = MapSquare(
-                self.maxRows*side, self.maxColumns*side, side, self.screen, (0, 0), load)
+                self.maxRows * side,
+                self.maxColumns * side,
+                side,
+                self.screen,
+                (0, 0),
+                load,
+            )
         elif mesh == "triangle":
             # Define o tamanho dos dois lados iguais do triangulo isoceles
             side = 78
@@ -61,7 +67,8 @@ class Maze:
             # Cria uma malha retangular
             # Passa a quantidade de retangulos em X e em Y, o lado, o angulo, a rela e a posicao inicial para comecar
             self.board = MapTriangle(
-                maxColumns, maxRows, side, angle, self.screen, (50, 50), load)
+                maxColumns, maxRows, side, angle, self.screen, (50, 50), load
+            )
         else:
             self.board = False
 
@@ -86,16 +93,21 @@ class Maze:
 
                     vs_line = vs_file.readline()
                     if vs_line:
-                        values = [float(signal)
-                                  for signal in vs_line.split(",")]
-                        print("sinais vitais da vitima em (",
-                              pos[0], ",", pos[1], ") : ", values)
+                        values = [float(signal) for signal in vs_line.split(",")]
+                        print(
+                            "sinais vitais da vitima em (",
+                            pos[0],
+                            ",",
+                            pos[1],
+                            ") : ",
+                            values,
+                        )
                         self.vitalSignals.append([])
-                        self.vitalSignals[self.numberOfVictims -
-                                          1].append(values)
+                        self.vitalSignals[self.numberOfVictims - 1].append(values)
                     else:
                         print(
-                            "!!! warning: número de vítimas do ambiente maior do que número de sinais vitais")
+                            "!!! warning: número de vítimas do ambiente maior do que número de sinais vitais"
+                        )
 
                     # diff_line = diff_file.readline()
                     # if diff_line:

@@ -23,17 +23,17 @@ class Triangle:
         self.side = side
         self.screen = screen
         self.ide = ide
-        self.height = side*math.cos(angle)
+        self.height = side * math.cos(angle)
         self.base = 2 * (math.sqrt(side**2 - (self.height**2)))
         self.typeT = typeT
         # Define os 3 pontos do triangulo
         self.p1 = ref
         if typeT == 0:
-            self.p2 = (int(ref[0] + self.base/2), int(ref[1] + self.height))
-            self.p3 = (int(ref[0] - self.base/2), int(ref[1] + self.height))
+            self.p2 = (int(ref[0] + self.base / 2), int(ref[1] + self.height))
+            self.p3 = (int(ref[0] - self.base / 2), int(ref[1] + self.height))
         else:
-            self.p2 = (int(ref[0] + self.base/2), int(ref[1] - self.height))
-            self.p3 = (int(ref[0] - self.base/2), int(ref[1] - self.height))
+            self.p2 = (int(ref[0] + self.base / 2), int(ref[1] - self.height))
+            self.p3 = (int(ref[0] - self.base / 2), int(ref[1] - self.height))
 
         # Define o que pode ter dentro do Triangulo. Quando for True, significa que o objeto esta 'dentro' dele, na posicao
         self.color = False
@@ -65,20 +65,19 @@ class Triangle:
     def show(self):
         # De acordo com o que tem dentro, irá mudar a cor
         if self.agent == True:
-            pygame.draw.polygon(self.screen, (0, 255, 0),
-                                (self.p1, self.p2, self.p3))
+            pygame.draw.polygon(self.screen, (0, 255, 0), (self.p1, self.p2, self.p3))
         elif self.color != False:
-            pygame.draw.polygon(self.screen, self.color,
-                                (self.p1, self.p2, self.p3))
+            pygame.draw.polygon(self.screen, self.color, (self.p1, self.p2, self.p3))
         elif self.goal == True:
-            pygame.draw.polygon(self.screen, (240, 230, 140),
-                                (self.p1, self.p2, self.p3))
+            pygame.draw.polygon(
+                self.screen, (240, 230, 140), (self.p1, self.p2, self.p3)
+            )
         else:
-            pygame.draw.polygon(self.screen, (255, 255, 255),
-                                (self.p1, self.p2, self.p3))
+            pygame.draw.polygon(
+                self.screen, (255, 255, 255), (self.p1, self.p2, self.p3)
+            )
         # Desenha o contorno preto
-        pygame.draw.polygon(self.screen, (0, 0, 0),
-                            (self.p1, self.p2, self.p3), 1)
+        pygame.draw.polygon(self.screen, (0, 0, 0), (self.p1, self.p2, self.p3), 1)
 
     # Verifica se foi clicado dentro dele
 
@@ -86,34 +85,46 @@ class Triangle:
         # Verifica se o tipo do triangulo é 0
         if self.typeT == 0:
             # Verifica se clicou fora
-            if posMouse[0] < self.ref[0] - self.base/2 or posMouse[0] > self.ref[0] + self.base/2:
+            if (
+                posMouse[0] < self.ref[0] - self.base / 2
+                or posMouse[0] > self.ref[0] + self.base / 2
+            ):
                 return False
             elif posMouse[1] < self.ref[1] or posMouse[1] > self.ref[1] + self.height:
                 return False
             else:
-                if posMouse[1] < self.ref[1] + (2*self.height/self.base)*(abs(posMouse[0]-self.ref[0])):
+                if posMouse[1] < self.ref[1] + (2 * self.height / self.base) * (
+                    abs(posMouse[0] - self.ref[0])
+                ):
                     return False
                 else:
                     # Se for clicado dentro, pinta ele de preto
                     pygame.draw.polygon(
-                        self.screen, (0, 0, 0), (self.p1, self.p2, self.p3))
+                        self.screen, (0, 0, 0), (self.p1, self.p2, self.p3)
+                    )
                     # Abre a caixa que mostra a opções de itens que podem estar dentro dele
                     self.openOptions()
                     return self
         # Verifica se o tipo do triangulo é 1
         elif self.typeT == 1:
             # Verifica se clicou fora
-            if posMouse[0] < self.ref[0] - self.base/2 or posMouse[0] > self.ref[0] + self.base/2:
+            if (
+                posMouse[0] < self.ref[0] - self.base / 2
+                or posMouse[0] > self.ref[0] + self.base / 2
+            ):
                 return False
             elif posMouse[1] > self.ref[1] or posMouse[1] < self.ref[1] - self.height:
                 return False
             else:
-                if posMouse[1] > self.ref[1] - (2*self.height/self.base)*(abs(posMouse[0]-self.ref[0])):
+                if posMouse[1] > self.ref[1] - (2 * self.height / self.base) * (
+                    abs(posMouse[0] - self.ref[0])
+                ):
                     return False
                 else:
                     # Se for clicado dentro, pinta ele de preto
                     pygame.draw.polygon(
-                        self.screen, (0, 0, 0), (self.p1, self.p2, self.p3))
+                        self.screen, (0, 0, 0), (self.p1, self.p2, self.p3)
+                    )
                     # Abre a caixa que mostra a opções de itens que podem estar dentro dele
                     self.openOptions()
                     return self

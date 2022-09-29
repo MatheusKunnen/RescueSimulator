@@ -1,5 +1,4 @@
 class Configuration:
-
     def __init__(self, ambiente_path, sinais_vitais_path):
         self.ambiente_path = ambiente_path
         self.sinais_vitais_path = sinais_vitais_path
@@ -16,20 +15,20 @@ class Configuration:
         lines = ambiente_file.readlines()
         ambiente_file.close()
         for line in lines:
-            param, *values = line.replace('\n', '').split(' ')
+            param, *values = line.replace("\n", "").split(" ")
             value = None
-            if (param == 'Te' or param == 'Ts' or param == 'XMax' or param == "YMax"):
+            if param == "Te" or param == "Ts" or param == "XMax" or param == "YMax":
                 value = int(values[0])
-            elif (param == 'Base'):
-                x, y, *_ = values[0].split(',')
+            elif param == "Base":
+                x, y, *_ = values[0].split(",")
                 value = [int(x), int(y)]
-            elif (param == 'Vitimas' or param == 'Parede'):
+            elif param == "Vitimas" or param == "Parede":
                 value = []
                 for pos in values:
-                    x, y, *_ = pos.split(',')
+                    x, y, *_ = pos.split(",")
                     value.append([int(x), int(y)])
             else:
-                raise Exception('Parametro inválido!')
+                raise Exception("Parametro inválido!")
             self.ambiente[param] = value
         # print(self.ambiente)
 
@@ -39,11 +38,17 @@ class Configuration:
         sinais_vitais_file.close()
         for line in lines:
             self.sinais_vitais.append(
-                [float(x) if i > 0 else int(x) for i, x in enumerate(line.replace('\n', '').replace(' ', '').split(','))])
+                [
+                    float(x) if i > 0 else int(x)
+                    for i, x in enumerate(
+                        line.replace("\n", "").replace(" ", "").split(",")
+                    )
+                ]
+            )
         # print(self.sinais_vitais)
 
     def getMaxColumnas(self):
-        return self.ambiente.get('XMax')
+        return self.ambiente.get("XMax")
 
     def getMaxFilas(self):
-        return self.ambiente.get('YMax')
+        return self.ambiente.get("YMax")

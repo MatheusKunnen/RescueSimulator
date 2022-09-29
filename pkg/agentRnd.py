@@ -23,7 +23,7 @@ from randomPlan import RandomPlan
 
 class AgentRnd:
     def __init__(self, model, configDict):
-        """ 
+        """
         Construtor do agente random
         @param model referencia o ambiente onde o agente estah situado
         """
@@ -54,11 +54,12 @@ class AgentRnd:
         # self.prob.defGoalState(randint(0,model.rows-1), randint(0,model.columns-1))
 
         # definimos um estado objetivo que veio do arquivo ambiente.txt
-        self.prob.defGoalState(
-            model.maze.board.posGoal[0], model.maze.board.posGoal[1])
+        self.prob.defGoalState(model.maze.board.posGoal[0], model.maze.board.posGoal[1])
         print("*** Objetivo do agente: ", self.prob.goalState)
-        print("*** Total de vitimas existentes no ambiente: ",
-              self.model.getNumberOfVictims())
+        print(
+            "*** Total de vitimas existentes no ambiente: ",
+            self.model.getNumberOfVictims(),
+        )
 
         """
         DEFINE OS PLANOS DE EXECUÇÃO DO AGENTE
@@ -68,8 +69,9 @@ class AgentRnd:
         self.costAll = 0
 
         # Cria a instancia do plano para se movimentar aleatoriamente no labirinto (sem nenhuma acao)
-        self.plan = RandomPlan(model.rows, model.columns,
-                               self.prob.goalState, initial, "goal", self.mesh)
+        self.plan = RandomPlan(
+            model.rows, model.columns, self.prob.goalState, initial, "goal", self.mesh
+        )
 
         # adicionar crencas sobre o estado do ambiente ao plano - neste exemplo, o agente faz uma copia do que existe no ambiente.
         # Em situacoes de exploracao, o agente deve aprender em tempo de execucao onde estao as paredes
@@ -101,8 +103,14 @@ class AgentRnd:
 
         # Verifica se a execução do acao do ciclo anterior funcionou ou nao
         if not (self.currentState == self.expectedState):
-            print("---> erro na execucao da acao ", self.previousAction,
-                  ": esperava estar em ", self.expectedState, ", mas estou em ", self.currentState)
+            print(
+                "---> erro na execucao da acao ",
+                self.previousAction,
+                ": esperava estar em ",
+                self.expectedState,
+                ", mas estou em ",
+                self.currentState,
+            )
 
         # Funcionou ou nao, vou somar o custo da acao com o total
         self.costAll += self.prob.getActionCost(self.previousAction)
@@ -121,16 +129,32 @@ class AgentRnd:
         # Verifica se tem vitima na posicao atual
         victimId = self.victimPresenceSensor()
         if victimId > 0:
-            print("vitima encontrada em ", self.currentState, " id: ", victimId,
-                  " sinais vitais: ", self.victimVitalSignalsSensor(victimId))
-            print("vitima encontrada em ", self.currentState, " id: ", victimId,
-                  " dif de acesso: ", self.victimDiffOfAcessSensor(victimId))
+            print(
+                "vitima encontrada em ",
+                self.currentState,
+                " id: ",
+                victimId,
+                " sinais vitais: ",
+                self.victimVitalSignalsSensor(victimId),
+            )
+            print(
+                "vitima encontrada em ",
+                self.currentState,
+                " id: ",
+                victimId,
+                " dif de acesso: ",
+                self.victimDiffOfAcessSensor(victimId),
+            )
 
         # Define a proxima acao a ser executada
         # currentAction eh uma tupla na forma: <direcao>, <state>
         result = self.plan.chooseAction()
-        print("Ag deliberou pela acao: ",
-              result[0], " o estado resultado esperado é: ", result[1])
+        print(
+            "Ag deliberou pela acao: ",
+            result[0],
+            " o estado resultado esperado é: ",
+            result[1],
+        )
 
         # Executa esse acao, atraves do metodo executeGo
         self.executeGo(result[0])
@@ -143,7 +167,7 @@ class AgentRnd:
     def executeGo(self, action):
         """Atuador: solicita ao agente físico para executar a acao.
         @param direction: Direcao da acao do agente {"N", "S", ...}
-        @return 1 caso movimentacao tenha sido executada corretamente """
+        @return 1 caso movimentacao tenha sido executada corretamente"""
 
         # Passa a acao para o modelo
         result = self.model.go(action)
@@ -163,11 +187,11 @@ class AgentRnd:
 
     def victimPresenceSensor(self):
         """Simula um sensor que realiza a deteccao de presenca de vitima na posicao onde o agente se encontra no ambiente
-           @return retorna o id da vítima"""
+        @return retorna o id da vítima"""
         return self.model.isThereVictim()
 
     def victimVitalSignalsSensor(self, victimId):
-        """Simula um sensor que realiza a leitura dos sinais da vitima 
+        """Simula um sensor que realiza a leitura dos sinais da vitima
         @param o id da vítima
         @return a lista de sinais vitais (ou uma lista vazia se não tem vítima com o id)"""
         return self.model.getVictimVitalSignals(victimId)

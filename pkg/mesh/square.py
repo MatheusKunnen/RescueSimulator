@@ -45,29 +45,51 @@ class Square:
     def show(self):
         # A depender do que tem dentro, muda a cor
         if self.color != False:
-            pygame.draw.rect(self.screen, self.color,
-                             (self.ref[0], self.ref[1], self.side, self.side))
+            pygame.draw.rect(
+                self.screen,
+                self.color,
+                (self.ref[0], self.ref[1], self.side, self.side),
+            )
         elif self.agent == True:
-            pygame.draw.rect(self.screen, (0, 255, 0),
-                             (self.ref[0], self.ref[1], self.side, self.side))
+            pygame.draw.rect(
+                self.screen,
+                (0, 255, 0),
+                (self.ref[0], self.ref[1], self.side, self.side),
+            )
         elif self.color != False:
-            pygame.draw.rect(self.screen, self.color,
-                             (self.ref[0], self.ref[1], self.side, self.side))
+            pygame.draw.rect(
+                self.screen,
+                self.color,
+                (self.ref[0], self.ref[1], self.side, self.side),
+            )
         elif self.goal == True:
-            pygame.draw.rect(self.screen, (240, 230, 140),
-                             (self.ref[0], self.ref[1], self.side, self.side))
+            pygame.draw.rect(
+                self.screen,
+                (240, 230, 140),
+                (self.ref[0], self.ref[1], self.side, self.side),
+            )
         elif self.color != False:
-            pygame.draw.rect(self.screen, self.color,
-                             (self.ref[0], self.ref[1], self.side, self.side))
+            pygame.draw.rect(
+                self.screen,
+                self.color,
+                (self.ref[0], self.ref[1], self.side, self.side),
+            )
         elif self.victim == True:
-            pygame.draw.rect(self.screen, (240, 0, 0),
-                             (self.ref[0], self.ref[1], self.side, self.side))
+            pygame.draw.rect(
+                self.screen,
+                (240, 0, 0),
+                (self.ref[0], self.ref[1], self.side, self.side),
+            )
         else:
-            pygame.draw.rect(self.screen, (255, 255, 255),
-                             (self.ref[0], self.ref[1], self.side, self.side))
+            pygame.draw.rect(
+                self.screen,
+                (255, 255, 255),
+                (self.ref[0], self.ref[1], self.side, self.side),
+            )
         # Desenha o contorno preto
-        pygame.draw.rect(self.screen, (0, 0, 0),
-                         (self.ref[0], self.ref[1], self.side, self.side), 1)
+        pygame.draw.rect(
+            self.screen, (0, 0, 0), (self.ref[0], self.ref[1], self.side, self.side), 1
+        )
 
     # Verifica se clicou dentro do quadrado
     def checkClick(self, posMouse):
@@ -77,8 +99,9 @@ class Square:
             return False
         else:
             # Se clicou dentro, pinta o quadrado de preto
-            pygame.draw.rect(self.screen, (0, 0, 0),
-                             (self.ref[0], self.ref[1], self.side, self.side))
+            pygame.draw.rect(
+                self.screen, (0, 0, 0), (self.ref[0], self.ref[1], self.side, self.side)
+            )
             # E abre a caixa de opções que podem estar dentro do quadrado
             self.openOptions()
             return self

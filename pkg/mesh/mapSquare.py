@@ -1,6 +1,7 @@
 from .square import Square
 import os
 from datetime import datetime
+
 # Classe que define o Mesh de quadrados
 
 
@@ -47,8 +48,7 @@ class MapSquare:
             line = []
             # Percorre as colunas
             while x < self.width + self.posBegin[0]:
-                line.append(Square(
-                    (x, y), self.sideSquare, self.screen, (yr, xr)))
+                line.append(Square((x, y), self.sideSquare, self.screen, (yr, xr)))
                 x += self.sideSquare
                 xr += 1
             yr += 1
@@ -60,7 +60,7 @@ class MapSquare:
             # Cria um objeto para armazenar cada informação
             things = {}
             # Le o arquivo
-            arq = open(os.path.join("config_data", self.load+".txt"), "r")
+            arq = open(os.path.join("config_data", self.load + ".txt"), "r")
             # arq = open(os.path.join("config_data", self.load+".txt"), "r")
             for line in arq:
                 # O formato de cada linha é:
@@ -76,8 +76,7 @@ class MapSquare:
                     print(pos)
                     if len(pos) > 1:
                         # Define que naquela posicao vai ter determinado objeto
-                        self.listPlaces[int(pos[0])][int(
-                            pos[1])].itemInside = i
+                        self.listPlaces[int(pos[0])][int(pos[1])].itemInside = i
                         # Atualiza a cor do lugar
                         self.listPlaces[int(pos[0])][int(pos[1])].updateColor()
 
@@ -99,14 +98,12 @@ class MapSquare:
             obj = self.selectPlace.checkClickItens(posMouse)
             if obj != False:
                 if obj.itemInside == "Agente":
-                    self.listPlaces[self.posAgent[0]
-                                    ][self.posAgent[1]].agent = False
+                    self.listPlaces[self.posAgent[0]][self.posAgent[1]].agent = False
                     self.posAgent = obj.ide
                     obj.agent = True
                 elif obj.itemInside == "Objetivo":
 
-                    self.listPlaces[self.posGoal[0]
-                                    ][self.posGoal[1]].goal = False
+                    self.listPlaces[self.posGoal[0]][self.posGoal[1]].goal = False
                     self.posGoal = obj.ide
                     obj.goal = True
                 obj.itemInside = False
@@ -147,8 +144,9 @@ class MapSquare:
                 if typeBlock != False:
                     # Se o tipo do bloco já estiver dentro o things, apenas inclui mais um
                     if typeBlock in things:
-                        things[typeBlock] = things[typeBlock] + \
-                            " " + str(x) + "," + str(y)
+                        things[typeBlock] = (
+                            things[typeBlock] + " " + str(x) + "," + str(y)
+                        )
                     # Caso contrário adiciona o tip também
                     else:
                         things[typeBlock] = str(x) + "," + str(y)
@@ -160,9 +158,18 @@ class MapSquare:
             config += i + " " + things[i] + "\n"
         # Pega a data e hora atual, para gerar sempre um nome diferente para cada arquivo
         today = datetime.now()
-        name = str(today.year) + "" + str(today.month) + "" + \
-            str(today.day) + "" + str(today.hour) + "" + str(today.minute)
+        name = (
+            str(today.year)
+            + ""
+            + str(today.month)
+            + ""
+            + str(today.day)
+            + ""
+            + str(today.hour)
+            + ""
+            + str(today.minute)
+        )
         # Salva o arquivo
-        fil = open(os.path.join("config_data", name+".txt"), "w")
+        fil = open(os.path.join("config_data", name + ".txt"), "w")
         fil.write(config)
         fil.close()
