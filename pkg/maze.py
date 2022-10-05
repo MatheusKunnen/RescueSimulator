@@ -103,9 +103,7 @@ class Maze:
                         #     ") : ",
                         #     values,
                         # )
-                        self.vitalSignals.append([])
-                        self.vitalSignals[self.numberOfVictims -
-                                          1].append(values)
+                        self.vitalSignals.append(values.copy())
                     else:
                         print(
                             "!!! warning: número de vítimas do ambiente maior do que número de sinais vitais"
