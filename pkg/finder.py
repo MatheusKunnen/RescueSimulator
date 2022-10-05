@@ -1,5 +1,4 @@
 from queue import PriorityQueue
-from constants import ACTIONS
 from constants import MOVE_POS
 from constants import ACTIONS_COST
 from constants import REVERSE_ACTION
@@ -38,22 +37,18 @@ class Finder:
                     states[nr][nc].priority = ncost + self.h((nr, nc), pos_f)
                     states[nr][nc].predecessor = (row, col)
                     states[nr][nc].reverse_action = REVERSE_ACTION[action]
-                    print(state.priority, state.pos, self.map[row][col])
-                    frontier.put(states[nr][nc])  # , states[nr][nc].priority)
-
+                    frontier.put(states[nr][nc])
             if state.pos == pos_f:
                 break
-
         path = []
         st = states[pos_f[0]][pos_f[1]]
-        while st.predecessor != None:
+        while st.predecessor != None and st.pos != pos_i:
             path.append(REVERSE_ACTION[st.reverse_action])
             st = states[st.predecessor[0]][st.predecessor[1]]
-        print("PATH", path)
         return states[pos_f[0]][pos_f[1]].cost, path, states
 
     def h(self, pos_i, pos_f):
-        return abs(pos_f[0] - pos_i[0]) + abs(pos_f[1] - pos_i[1])
+        return abs(pos_f[0] - pos_i[0])**2 + abs(pos_f[1] - pos_i[1])**2
 
 
 class Item:
@@ -65,4 +60,4 @@ class Item:
         self.reverse_action = reverse_action
 
     def __lt__(self, other):
-        return self.priority < other.priority
+        return self.priority > other.priority

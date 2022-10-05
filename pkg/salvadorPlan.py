@@ -92,6 +92,7 @@ class SalvadorPlan:
         self.actions = []
         self.vitimas = vitimas
         self.should_pushback = True
+        self.distances = []
         self.__init_map_graph()
         self.__calculate_victims_distance()
 
@@ -127,9 +128,21 @@ class SalvadorPlan:
     def __calculate_victims_distance(self):
         find = Finder(self.map_graph, self.maxRows, self.maxColumns)
         # path, cost, states = find.calculate((0, 0), (6, 17))
+        for _ in range(len(self.vitimas)):
+            cols = []
+            for _ in range(len(self.vitimas)):
+                cols.append(None)
+            self.distances.append(cols)
+
         for i in range(len(self.vitimas)):
-            # for j in range(len(self.vitimas)):
-            print(self.vitimas[i])
+            pos_i, _ = self.vitimas[i]
+            self.distances[i][i] = (0, [])
+            for j in range(i+1, len(self.vitimas)):
+                pos_j, _ = self.vitimas[j]
+                cost, path, _ = find.calculate(pos_i, pos_j)
+                self.distances[i][j] = (cost, path)
+                self.distances[j][i] = (cost, path)
+        print(self.distances)
 
     def setWalls(self, walls):
         # Neste modelo o agente não conhece as paredes
