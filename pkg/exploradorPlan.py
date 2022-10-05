@@ -127,13 +127,14 @@ class ExploradorPlan:
         a posicao das paredes do labirinto e movimentos na diagonal
         @param toState: instancia da classe State - um par (lin, col) - que aqui indica a posicao futura
         @return: True quando é possivel ir do estado atual para o estado futuro"""
-
+        return True
+        # Desativado, pois o agente não conhece as bordas
         # vai para fora do labirinto
-        if toState.col < 0 or toState.row < 0:
-            return False
+        # if toState.col < 0 or toState.row < 0:
+        #     return False
 
-        if toState.col >= self.maxColumns or toState.row >= self.maxRows:
-            return False
+        # if toState.col >= self.maxColumns or toState.row >= self.maxRows:
+        #     return False
 
         if len(self.walls) == 0:
             return True
@@ -191,6 +192,8 @@ class ExploradorPlan:
                     ExploradorPlan.MOVE_POS[dst_action][0]
                 col = self.currentState.col + \
                     ExploradorPlan.MOVE_POS[dst_action][1]
+                # Adiciona a parede
+                self.walls.append((row, col))
                 if row > 0 and col > 0 and row < self.maxRows and col < self.maxColumns:
                     if ac_2_remove in self.possible_actions[row][col]:
                         self.possible_actions[row][col].remove(ac_2_remove)

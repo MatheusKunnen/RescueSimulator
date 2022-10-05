@@ -27,6 +27,7 @@ class Square:
         self.agent = False
         self.goal = False
         self.victim = False
+        self.visited = False
 
         # Variaveis usadas para definir se um objeto é acionavel
         self.actionable = False
@@ -36,6 +37,7 @@ class Square:
 
     def setAgent(self, agentIn):
         self.agent = agentIn
+        self.visited = True
 
     # Seta se o objetivo está dentro
     def setGoal(self, goalIn):
@@ -77,18 +79,19 @@ class Square:
         elif self.victim == True:
             pygame.draw.rect(
                 self.screen,
-                (240, 0, 0),
+                (240, 0, 0) if self.visited else (150, 0, 0),
                 (self.ref[0], self.ref[1], self.side, self.side),
             )
         else:
             pygame.draw.rect(
                 self.screen,
-                (255, 255, 255),
+                (255, 255, 255) if self.visited else (200, 200, 200),
                 (self.ref[0], self.ref[1], self.side, self.side),
             )
         # Desenha o contorno preto
         pygame.draw.rect(
-            self.screen, (0, 0, 0), (self.ref[0], self.ref[1], self.side, self.side), 1
+            self.screen, (0, 0, 0), (self.ref[0],
+                                     self.ref[1], self.side, self.side), 1
         )
 
     # Verifica se clicou dentro do quadrado
@@ -100,7 +103,8 @@ class Square:
         else:
             # Se clicou dentro, pinta o quadrado de preto
             pygame.draw.rect(
-                self.screen, (0, 0, 0), (self.ref[0], self.ref[1], self.side, self.side)
+                self.screen, (0, 0, 0), (self.ref[0],
+                                         self.ref[1], self.side, self.side)
             )
             # E abre a caixa de opções que podem estar dentro do quadrado
             self.openOptions()

@@ -58,7 +58,8 @@ class AgentExplorador:
         # self.prob.defGoalState(randint(0,model.rows-1), randint(0,model.columns-1))
 
         # definimos um estado objetivo que veio do arquivo ambiente.txt
-        self.prob.defGoalState(model.maze.board.posGoal[0], model.maze.board.posGoal[1])
+        self.prob.defGoalState(
+            model.maze.board.posGoal[0], model.maze.board.posGoal[1])
         # print("*** Objetivo do agente: ", self.prob.goalState)
         print(
             "*** Total de vitimas existentes no ambiente: ",
@@ -103,10 +104,10 @@ class AgentExplorador:
         if len(self.libPlan) == 0:
             return -1  # fim da execucao do agente, acabaram os planos
 
-        if self.tl < 0:
+        if self.tl < 2.5:
             # print(self.__map)
             print(len(self.__vitimas), self.model.getNumberOfVictims())
-            self.__init_map()
+            # self.__init_map()
             return -1
 
         self.plan = self.libPlan[0]
@@ -193,7 +194,7 @@ class AgentExplorador:
         # Adiciona vitima
         self.__vitimas_id.append(victimId)
         self.__vitimas.append(
-            ((self.currentState.row, self.currentState.col), sinais_vitais)
+            ([self.currentState.row, self.currentState.col], sinais_vitais)
         )
 
         print(
