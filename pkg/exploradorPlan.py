@@ -197,7 +197,7 @@ class ExploradorPlan:
 
     def onValidAction(self, action):
         # Eliminar outros estados que possam ser deducidos como válidos a partir desta ação
-        print(action, self.currentState)
+        # print(action, self.currentState)
         if action in ExploradorPlan.INITIAL_ACTIONS:
             reverse_action = ExploradorPlan.REVERSE_ACTION[action]
             if self.should_pushback:
@@ -211,6 +211,12 @@ class ExploradorPlan:
                 self.possible_actions[self.currentState.row][
                     self.currentState.col
                 ].remove(reverse_action)
+            for ac in ExploradorPlan.INITIAL_ACTIONS:
+                row = self.currentState.row + ExploradorPlan.MOVE_POS[ac][0]
+                col = self.currentState.col + ExploradorPlan.MOVE_POS[ac][1]
+                reverse_ac = ExploradorPlan.REVERSE_ACTION[ac]
+                if row >= 0 and col >= 0 and row < self.maxRows and col < self.maxColumns and reverse_ac in self.possible_actions[row][col]:
+                    self.possible_actions[row][col].remove(reverse_ac)
 
     def chooseAction(self):
         """
