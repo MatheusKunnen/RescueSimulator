@@ -1,4 +1,5 @@
 from agentExplorador import AgentExplorador
+from agentSalvador import AgentSalvador
 from model import Model
 from Configuration import Configuration
 import sys
@@ -59,7 +60,7 @@ def main():
     model.setGoalPos(model.maze.board.posGoal[0], model.maze.board.posGoal[1])
     model.draw()
 
-    # Cria um agente
+    # Cria o agente explorador
     explorador = AgentExplorador(model, config.ambiente)
 
     # Ciclo de raciocínio do agente
@@ -67,7 +68,11 @@ def main():
     while explorador.deliberate() != -1:
         model.draw()
         # para dar tempo de visualizar as movimentacoes do agente no labirinto
-        time.sleep(.05)
+        # time.sleep(.05)
+
+    salvador = AgentSalvador(
+        explorador.getMap(), explorador.getVitimas(), model, config.ambiente)
+
     model.draw()
 
 
