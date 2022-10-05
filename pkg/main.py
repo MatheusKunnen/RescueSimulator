@@ -36,7 +36,7 @@ def main():
     #     values = line.split("=")
     #     configDict[values[0]] = int(values[1])
     config = Configuration(
-        "./config_data/tarefa1/ambiente.txt", "./config_data/tarefa1/sinais_vitais.txt"
+        "./config_data/ambiente.txt", "./config_data/sinais_vitais.txt"
     )
     # return
     # print("dicionario config: ", configDict)
@@ -67,7 +67,7 @@ def main():
     while explorador.deliberate() != -1:
         model.draw()
         # para dar tempo de visualizar as movimentacoes do agente no labirinto
-        time.sleep(1.05)
+        time.sleep(.05)
     model.draw()
 
 

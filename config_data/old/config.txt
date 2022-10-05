@@ -1,7 +1,0 @@
-maxLin=50
-maxCol=50
-Tl=15
-Ts=30
-Bv=50
-Bs=60
-Ks=2
