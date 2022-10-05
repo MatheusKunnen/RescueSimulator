@@ -194,7 +194,7 @@ class AgentExplorador:
         # Adiciona vitima
         self.__vitimas_id.append(victimId)
         self.__vitimas.append(
-            ([self.currentState.row, self.currentState.col], sinais_vitais)
+            ((self.currentState.row, self.currentState.col), sinais_vitais)
         )
 
         print(
@@ -252,6 +252,12 @@ class AgentExplorador:
 
     def actionDo(self, posAction, action=True):
         self.model.do(posAction, action)
+
+    def getMap(self):
+        return self.__map
+
+    def getVitimas(self):
+        return self.__vitimas
 
     def __updateMap(self):
         self.__map[self.currentState.row][self.currentState.col] = PosType.LIVRE
