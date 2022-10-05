@@ -4,6 +4,8 @@ class Configuration:
         self.sinais_vitais_path = sinais_vitais_path
         self.ambiente = {}
         self.sinais_vitais = []
+        self.mesh = "square"
+        self.load = "ambiente"
         self.__load()
 
     def __load(self):
@@ -48,7 +50,19 @@ class Configuration:
         # print(self.sinais_vitais)
 
     def getMaxColumnas(self):
-        return self.ambiente.get("XMax")
+        cols = self.ambiente.get("YMax")
+        if cols <= 0:
+            return 5
+        return cols
 
     def getMaxFilas(self):
-        return self.ambiente.get("YMax")
+        rows = self.ambiente.get("XMax")
+        if rows <= 0:
+            return 5
+        return rows
+
+    def getMesh(self):
+        return self.mesh
+
+    def getLoadFile(self):
+        return self.load

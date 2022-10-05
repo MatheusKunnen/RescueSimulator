@@ -6,47 +6,44 @@ class Model:
     """Model implementa um ambiente na forma de um labirinto com paredes e com um agente.
     A indexação da posição do agente é feita sempre por um par ordenado (lin, col). Ver classe Labirinto."""
 
-    def __init__(self, rows, columns, mesh, load):
+    # def __init__(self, rows, columns, mesh, load):
+    def __init__(self, config):
         """Construtor de modelo do ambiente físico (labirinto)
         @param rows: número de linhas do labirinto
         @param columns: número de colunas do labirinto
         @param mesh: define o tipo malha a ser usado
         @param load: define o nome do arquivo que contém o mapa a ser usado
         """
-        if rows <= 0:
-            rows = 5
-        if columns <= 0:
-            columns = 5
 
-        self.rows = rows
-        self.columns = columns
-        self.mesh = mesh
-
-        ## Seta a posicao do agente
-        self.agentPos = [0, 0]
-        ## Seta a posicao do objetivo
+        self.rows = config.getMaxFilas()
+        self.columns = config.getMaxColumnas()
+        self.mesh = config.getMesh()
+        # Seta a posicao do agente
+        self.agentPos = config.ambiente["Base"].copy()
+        # Seta a posicao do objetivo
         self.goalPos = [0, 0]
 
-        ## Cria a view
+        # Cria a view
         self.view = View(self)
-        ## Cria o labirinto
-        self.maze = Maze(rows, columns, self.mesh, self.view.getScreen(), load)
-        ## Seta para o view o labirinto criado
+        # Cria o labirinto
+        self.maze = Maze(self.rows, self.columns, self.mesh,
+                         self.view.getScreen(), config.getLoadFile())
+        # Seta para o view o labirinto criado
         self.view.setBoard(self.maze.getBoard())
 
-    ## Metodo que desenha tudo no pygame
+    # Metodo que desenha tudo no pygame
     def draw(self):
         self.view.draw()
 
-    ## Metodo que desenha o labirinto no pygame
+    # Metodo que desenha o labirinto no pygame
     def drawToBuild(self):
         self.view.drawToBuild()
 
-    ## Metodo que retorna o step do view
+    # Metodo que retorna o step do view
     def getStep(self):
         return self.view.getStep()
 
-    ## Metodo que atualiza o labirinto
+    # Metodo que atualiza o labirinto
     def updateMaze(self):
         self.maze.updateWalls()
 
@@ -61,20 +58,20 @@ class Model:
         @param to_row: linha para onde vai o agente
         @param to_col: col para onde vai o agente"""
 
-        ## vai para fora do labirinto
+        # vai para fora do labirinto
         if to_col < 0 or to_row < 0:
             return -1
         if to_col >= self.maze.maxColumns or to_row >= self.maze.maxRows:
             return -1
 
-        ## vai para cima de uma parede
+        # vai para cima de uma parede
         if self.maze.walls[to_row][to_col] == 1:
             return -1
 
         row_dif = to_row - from_row
         col_dif = to_col - from_col
 
-        ## vai na diagonal? Caso sim, nao pode ter paredes acima & dir. ou acima & esq. ou abaixo & dir. ou abaixo & esq.
+        # vai na diagonal? Caso sim, nao pode ter paredes acima & dir. ou acima & esq. ou abaixo & dir. ou abaixo & esq.
         if row_dif != 0 and col_dif != 0:
             if (
                 self.maze.walls[from_row + row_dif][from_col] == 1
@@ -84,7 +81,7 @@ class Model:
 
         return 1
 
-    ## Metodo que atualiza a posicao do agente
+    # Metodo que atualiza a posicao do agente
     def setAgentPos(self, row, col):
         """Utilizada para colocar o agente em uma posicao especifica do ambiente
         @param row: a linha onde o agente será situado.
@@ -102,7 +99,7 @@ class Model:
         self.agentPos[1] = col
         return 1
 
-    ## Metodo que define a posicao do objetivo
+    # Metodo que define a posicao do objetivo
     def setGoalPos(self, row, col):
         """Utilizada para colocar o objetivo na posição inicial.
         @param row: a linha onde o objetivo será situado.
@@ -119,7 +116,7 @@ class Model:
         self.goalPos[1] = col
         return 1
 
-    ## Metodo que executa a acao de movimento do plano
+    # Metodo que executa a acao de movimento do plano
     def go(self, action):
         """
         Esse metodo deve ser alterado de acordo com o action a ser passado
@@ -183,8 +180,8 @@ class Model:
         victimId = self.maze.victims[row][col]
         return victimId
 
-    ## Metodo que executa uma acao (de não movimento)
+    # Metodo que executa uma acao (de não movimento)
     def do(self, posAction, action=True):
-        ## Pega o bloco que deve ser executado a ação, e chama o metodo de execucao dela
+        # Pega o bloco que deve ser executado a ação, e chama o metodo de execucao dela
         self.maze.board.listPlaces[posAction[0]][posAction[1]].doAction(action)
         return True
