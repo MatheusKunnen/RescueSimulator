@@ -1,9 +1,10 @@
-import requests, sys
+import requests
+import sys
 
 
 class Planner:
     def __init__(self):
-        print(sys.path)
+        # print(sys.path)
 
         self.domain = open("pkg/domainX.txt", "r").read()
         self.problem = open("pkg/problemX.txt", "r").read()

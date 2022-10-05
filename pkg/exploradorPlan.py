@@ -162,10 +162,10 @@ class ExploradorPlan:
     def calculateNextPosition(self):
         """Calcula a posicao futura do agente
         @return: tupla contendo a acao (direcao) e o estado futuro resultante da movimentacao"""
-        print(
-            self.possible_actions[self.currentState.row][self.currentState.col],
-            self.pushback_actions[self.currentState.row][self.currentState.col],
-        )
+        # print(
+        #     self.possible_actions[self.currentState.row][self.currentState.col],
+        #     self.pushback_actions[self.currentState.row][self.currentState.col],
+        # )
         if len(self.possible_actions[self.currentState.row][self.currentState.col]) > 0:
             self.should_pushback = True
             action = self.possible_actions[self.currentState.row][

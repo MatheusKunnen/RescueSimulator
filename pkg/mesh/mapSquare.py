@@ -48,7 +48,8 @@ class MapSquare:
             line = []
             # Percorre as colunas
             while x < self.width + self.posBegin[0]:
-                line.append(Square((x, y), self.sideSquare, self.screen, (yr, xr)))
+                line.append(
+                    Square((x, y), self.sideSquare, self.screen, (yr, xr)))
                 x += self.sideSquare
                 xr += 1
             yr += 1
@@ -73,10 +74,11 @@ class MapSquare:
             for i in things:
                 for j in things[i]:
                     pos = j.split(",")
-                    print(pos)
+                    # print(pos)
                     if len(pos) > 1:
                         # Define que naquela posicao vai ter determinado objeto
-                        self.listPlaces[int(pos[0])][int(pos[1])].itemInside = i
+                        self.listPlaces[int(pos[0])][int(
+                            pos[1])].itemInside = i
                         # Atualiza a cor do lugar
                         self.listPlaces[int(pos[0])][int(pos[1])].updateColor()
 
@@ -98,12 +100,14 @@ class MapSquare:
             obj = self.selectPlace.checkClickItens(posMouse)
             if obj != False:
                 if obj.itemInside == "Agente":
-                    self.listPlaces[self.posAgent[0]][self.posAgent[1]].agent = False
+                    self.listPlaces[self.posAgent[0]
+                                    ][self.posAgent[1]].agent = False
                     self.posAgent = obj.ide
                     obj.agent = True
                 elif obj.itemInside == "Objetivo":
 
-                    self.listPlaces[self.posGoal[0]][self.posGoal[1]].goal = False
+                    self.listPlaces[self.posGoal[0]
+                                    ][self.posGoal[1]].goal = False
                     self.posGoal = obj.ide
                     obj.goal = True
                 obj.itemInside = False

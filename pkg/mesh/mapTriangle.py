@@ -122,7 +122,8 @@ class MapTriangle:
             # Cria um objeto para armazenar cada informação
             things = {}
             # Le o arquivo
-            arq = open(os.path.join("pkg", "mesh", "loads", self.load + ".txt"), "r")
+            arq = open(os.path.join("pkg", "mesh",
+                       "loads", self.load + ".txt"), "r")
             for line in arq:
                 # O formato de cada linha é:
                 # Nome x,y x,y x,y
@@ -153,14 +154,16 @@ class MapTriangle:
         if self.selectPlace != False:
             obj = self.selectPlace.checkClickItens(posMouse)
             if obj != False:
-                print(obj)
+                # print(obj)
                 if obj.itemInside == "Robô":
-                    self.listPlaces[self.posAgent[0]][self.posAgent[1]].agent = False
+                    self.listPlaces[self.posAgent[0]
+                                    ][self.posAgent[1]].agent = False
                     self.posAgent = obj.ide
                     obj.agent = True
                 elif obj.itemInside == "Objetivo":
 
-                    self.listPlaces[self.posGoal[0]][self.posGoal[1]].goal = False
+                    self.listPlaces[self.posGoal[0]
+                                    ][self.posGoal[1]].goal = False
                     self.posGoal = obj.ide
                     obj.goal = True
                 obj.itemInside = False
