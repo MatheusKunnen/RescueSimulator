@@ -8,6 +8,7 @@ import os
 
 # Importa Classes necessarias para o funcionamento
 from model import Model
+from constants import get_label_gravidade
 from problem import Problem
 from state import State
 from random import randint
@@ -35,7 +36,7 @@ class AgentSalvador:
         self.model = model
 
         # Obtem o tempo que tem para executar
-        self.tl = configDict["Te"]
+        self.tl = configDict["Ts"]
         print("Tempo disponivel: ", self.tl)
 
         # Pega o tipo de mesh, que está no model (influência na movimentação)
@@ -98,7 +99,7 @@ class AgentSalvador:
     # Metodo que define a deliberacao do agente
     def deliberate(self):
         # Adiciona estado como livre no mapa
-        self.__updateMap()
+        # self.__updateMap()
 
         # Verifica se há algum plano a ser executado
         if len(self.libPlan) == 0:
@@ -156,6 +157,8 @@ class AgentSalvador:
         # Define a proxima acao a ser executada
         # currentAction eh uma tupla na forma: <direcao>, <state>
         result = self.plan.chooseAction()
+        if result is None:
+            return -1
         print(
             "Ag deliberou pela acao: ",
             result[0],
@@ -185,28 +188,18 @@ class AgentSalvador:
         if self.tl < 2:
             return
 
-        # Lê sinais vitais
-        sinais_vitais = self.victimVitalSignalsSensor(victimId)
-        if len(sinais_vitais) <= 0:
-            return
-
-        # Utiliza tempo para ler
-        self.tl -= AgentSalvador.CUSTO_VITIMA
-
         # Adiciona vitima
         self.__vitimas_id.append(victimId)
-        self.__vitimas.append(
-            ([self.currentState.row, self.currentState.col], sinais_vitais)
-        )
 
         print(
-            "vitima encontrada em ",
+            "vitima salvada em ",
             self.currentState,
             " id: ",
             victimId,
-            " sinais vitais: ",
-            sinais_vitais,
         )
+
+    def getNVitimas(self):
+        return len(self.__vitimas_id)
 
     # Metodo que executa as acoes
     def executeGo(self, action):
@@ -255,8 +248,16 @@ class AgentSalvador:
     def actionDo(self, posAction, action=True):
         self.model.do(posAction, action)
 
-    def __updateMap(self):
-        self.__map[self.currentState.row][self.currentState.col] = PosType.LIVRE
+    def get_gv(self):
+        gv = [0, 0, 0, 0]
+        for i in self.__vitimas_id:
+            sinais = self.model.getVictimVitalSignals(i)
+            if len(sinais) > 0:
+                gv[get_label_gravidade(sinais)-1] += 1
+        max_grav_vitimas = 0
+        for i in range(len(gv)):
+            max_grav_vitimas += (i+1) * gv[i]
+        return max_grav_vitimas
 
     def __init_map(self):
         """

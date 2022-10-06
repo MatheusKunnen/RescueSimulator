@@ -43,3 +43,17 @@ REVERSE_ACTION = {
     "SE": "NO",
     "SO": "NE",
 }
+
+
+def get_label_gravidade(sinais_vitais):
+    gravidade = sinais_vitais[len(sinais_vitais) - 1]
+    if len(sinais_vitais) > 7:
+        gravidade = sinais_vitais[len(sinais_vitais) - 2]
+    label = 1
+    if gravidade > 75:
+        label += 1
+    if gravidade > 50:
+        label += 1
+    if gravidade > 25:
+        label += 1
+    return label

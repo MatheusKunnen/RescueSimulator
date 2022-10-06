@@ -7,6 +7,7 @@ import sys
 import os
 
 # Importa Classes necessarias para o funcionamento
+from constants import get_label_gravidade
 from model import Model
 from retornoPlan import RetornoPlan
 from problem import Problem
@@ -138,13 +139,15 @@ class AgentExplorador:
             )
         else:
             self.plan.onValidAction(self.previousAction)
-        
+
         # consome o tempo gasto
         self.tl -= self.prob.getActionCost(self.previousAction)
+        self.costAll += self.prob.getActionCost(self.previousAction)
         print("Tempo disponivel: ", self.tl)
 
         # Funcionou ou nao, vou somar o custo da acao com o total
-        print("Custo até o momento (com a ação escolhida):", self.tempoTotal - self.tl)
+        print("Custo até o momento (com a ação escolhida):",
+              self.tempoTotal - self.tl)
 
         # Verifica se precisa retorna pra base
         return_time = self.returnPlan.getCurrentReturnTime()
@@ -197,8 +200,11 @@ class AgentExplorador:
         # Lê sinais vitais
         sinais_vitais = self.victimVitalSignalsSensor(victimId)
 
+        if len(sinais_vitais) <= 0:
+            return
         # Utiliza tempo para ler
         self.tl -= AgentExplorador.CUSTO_VITIMA
+        self.costAll += AgentExplorador.CUSTO_VITIMA
 
         # Adiciona vitima
         self.__vitimas_id.append(victimId)
@@ -254,7 +260,18 @@ class AgentExplorador:
         @return a lista dos dados de dificuldade (ou uma lista vazia se não tem vítima com o id)"""
         return self.model.getDifficultyOfAcess(victimId)
 
+    def get_gv(self):
+        gv = [0, 0, 0, 0]
+        for i in self.__vitimas_id:
+            sinais = self.model.getVictimVitalSignals(i)
+            if len(sinais) > 0:
+                gv[get_label_gravidade(sinais)-1] += 1
+        max_grav_vitimas = 0
+        for i in range(len(gv)):
+            max_grav_vitimas += (i+1) * gv[i]
+        return max_grav_vitimas
     # Metodo que atualiza a biblioteca de planos, de acordo com o estado atual do agente
+
     def updateLibPlan(self):
         for i in self.libPlan:
             i.updateCurrentState(self.currentState)

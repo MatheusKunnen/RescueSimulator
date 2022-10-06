@@ -2,6 +2,7 @@ from cgi import print_arguments
 from random import shuffle
 from constants import ACTIONS, MOVE_POS
 from finder import Finder
+from constants import REVERSE_ACTION
 from salvadorAG import SalvadorAG
 from state import State
 from constants import PosType
@@ -99,13 +100,13 @@ class SalvadorPlan:
         self.__init_ag()
 
     def __init_ag(self):
-
-        # def __init__(self, map_graph, maxRows, maxCols, distances, vitimas, time, base):
         self.ag = SalvadorAG(self.map_graph, self.maxRows, self.maxColumns, self.distances,
                              self.vitimas, self.time, (self.initialState.row, self.initialState.col))
+        self.ag.calculate()
+        self.actions = self.ag.get_best_path()
+        print(self.actions)
 
     def __init_map_graph(self):
-        # print(self.vitimas)
         self.map_graph = []
         # Init empty map graph
         for _ in range(self.maxRows):
@@ -116,26 +117,16 @@ class SalvadorPlan:
 
         for row in range(self.maxRows):
             for col in range(self.maxColumns):
-                for action in ACTIONS:
+                for action in ["N", "S", "L", "O"]:  # ACTIONS:
                     d_row, d_col = MOVE_POS[action]
                     s_row = d_row + row
                     s_col = d_col + col
-                    # print(action, d_row, d_col, s_row, s_col)
                     if self.__is_valid_pos(s_row, s_col):
                         if self.map[s_row][s_col] != PosType.PAREDE:
                             self.map_graph[row][col].append(action)
-        # print(self.map_graph)
-        # find = Finder(self.map_graph, self.maxRows, self.maxColumns)
-        # path, cost, states = find.calculate((0, 0), (6, 17))
-        # print(states)
-        # print(cost)
-        # print(path)
-        # print(self.map_graph[0][0])
-        # print(self.map_graph[7][4])
 
     def __calculate_victims_distance(self):
         find = Finder(self.map_graph, self.maxRows, self.maxColumns)
-        # path, cost, states = find.calculate((0, 0), (6, 17))
         for _ in range(len(self.vitimas)):
             cols = []
             for _ in range(len(self.vitimas)):
@@ -149,8 +140,8 @@ class SalvadorPlan:
                 pos_j, _ = self.vitimas[j]
                 cost, path, _ = find.calculate(pos_i, pos_j)
                 self.distances[i][j] = (cost, path)
-                self.distances[j][i] = (cost, path)
-        print(self.distances)
+                self.distances[j][i] = (
+                    cost, [REVERSE_ACTION[a] for a in path])
 
     def setWalls(self, walls):
         # Neste modelo o agente não conhece as paredes
@@ -231,6 +222,7 @@ class SalvadorPlan:
         return action, state
 
     def onInvalidAction(self, action):
+        return
         # Eliminar outros estados que possam ser deducidos como inválidos a partir desta ação
         if action in SalvadorPlan.INITIAL_ACTIONS:
             for dst_action, ac_2_remove in SalvadorPlan.ON_INVALID_ACTION[action]:
@@ -245,6 +237,7 @@ class SalvadorPlan:
                         self.possible_actions[row][col].remove(ac_2_remove)
 
     def onValidAction(self, action):
+        return
         # Eliminar outros estados que possam ser deducidos como válidos a partir desta ação
         # print(action, self.currentState)
         if action in SalvadorPlan.INITIAL_ACTIONS:
@@ -273,14 +266,15 @@ class SalvadorPlan:
         @return: tupla contendo a acao (direcao) e uma instância da classe State que representa a posição esperada após a execução
         """
 
-        # Tenta encontrar um movimento possivel dentro do tabuleiro
-        action = self.calculateNextPosition()
-
-        while not self.isPossibleToMove(action[1]):
-            self.onInvalidAction(action[0])
-            action = self.calculateNextPosition()
-
-        return action
+        if len(self.actions) > 0:
+            action = self.actions.pop()
+            state = State(
+                self.currentState.row + MOVE_POS[action][0],
+                self.currentState.col + MOVE_POS[action][1],
+            )
+            return action, state
+        else:
+            return None
 
     def do(self):
         """
