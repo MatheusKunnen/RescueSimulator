@@ -20,3 +20,6 @@ Simula vítimas dispersas em um ambiente com paredes.
 - Prof. Cesar Augusto Tacla
 
 UTFPR, Câmpus Curitiba, grupo PET ENGENHARIA DE COMPUTAÇÃO
+
+====================================================================================
+Dica Prof: comparar o algoritmo de retorno do explorador com o LRTA* no artigo

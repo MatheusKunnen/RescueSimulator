@@ -96,11 +96,11 @@ def main():
     print("pve", len(explorador.getVitimas())/model.getNumberOfVictims())
     print("tve", explorador.costAll/len(explorador.getVitimas()))
     print("veg", explorador.get_gv()/max_grav_vitimas)
-    print("pve", salvador.getNVitimas()/model.getNumberOfVictims())
+    print("pvs", salvador.getNVitimas()/model.getNumberOfVictims())
     if salvador.getNVitimas() > 0:
-        print("pvs", salvador.costAll/salvador.getNVitimas())
+        print("tsv", salvador.costAll/salvador.getNVitimas())
     else:
-        print("pvs", "N/A")
+        print("tsv", "N/A")
     print("vsg", salvador.get_gv()/max_grav_vitimas)
 
     model.draw()
