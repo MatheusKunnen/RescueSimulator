@@ -69,6 +69,7 @@ def main():
         model.draw()
         # para dar tempo de visualizar as movimentacoes do agente no labirinto
         # time.sleep(.05)
+    print("Fim exploracao")
 
     salvador = AgentSalvador(
         explorador.getMap(), explorador.getVitimas(), model, config.ambiente)

@@ -8,6 +8,7 @@ import os
 
 # Importa Classes necessarias para o funcionamento
 from model import Model
+from retornoPlan import RetornoPlan
 from problem import Problem
 from state import State
 from random import randint
@@ -35,7 +36,8 @@ class AgentExplorador:
         self.model = model
 
         # Obtem o tempo que tem para executar
-        self.tl = configDict["Te"]
+        self.tempoTotal = configDict["Te"]
+        self.tl = self.tempoTotal
         print("Tempo disponivel: ", self.tl)
 
         # Pega o tipo de mesh, que está no model (influência na movimentação)
@@ -78,12 +80,14 @@ class AgentExplorador:
             model.rows, model.columns, self.prob.goalState, initial, "goal", self.mesh
         )
 
+        self.returnPlan = RetornoPlan(model.rows, model.columns, initial)
+
         # adicionar crencas sobre o estado do ambiente ao plano - neste exemplo, o agente faz uma copia do que existe no ambiente.
         # Em situacoes de exploracao, o agente deve aprender em tempo de execucao onde estao as paredes
         self.plan.setWalls(model.maze.walls)
 
         # Adiciona o(s) planos a biblioteca de planos do agente
-        self.libPlan = [self.plan]
+        self.libPlan = [self.plan, self.returnPlan]
 
         # inicializa acao do ciclo anterior com o estado esperado
         self.previousAction = "nop"  # nenhuma (no operation)
@@ -104,7 +108,7 @@ class AgentExplorador:
         if len(self.libPlan) == 0:
             return -1  # fim da execucao do agente, acabaram os planos
 
-        if self.tl < 2.5:
+        if self.tl <= 0.5:
             # print(self.__map)
             print(len(self.__vitimas), self.model.getNumberOfVictims())
             # self.__init_map()
@@ -117,8 +121,8 @@ class AgentExplorador:
 
         # Redefine o estado atual do agente de acordo com o resultado da execução da ação do ciclo anterior
         self.currentState = self.positionSensor()
-        # atualiza o current state no plano
-        self.plan.updateCurrentState(self.currentState)
+        # atualiza o current state nos planos
+        self.updateLibPlan()
         print("Ag cre que esta em: ", self.currentState)
 
         # Verifica se a execução do acao do ciclo anterior funcionou ou nao
@@ -134,24 +138,23 @@ class AgentExplorador:
             )
         else:
             self.plan.onValidAction(self.previousAction)
-        # Funcionou ou nao, vou somar o custo da acao com o total
-        self.costAll += self.prob.getActionCost(self.previousAction)
-        print("Custo até o momento (com a ação escolhida):", self.costAll)
-
+        
         # consome o tempo gasto
         self.tl -= self.prob.getActionCost(self.previousAction)
         print("Tempo disponivel: ", self.tl)
 
-        # Verifica se atingiu o estado objetivo
-        # Poderia ser outra condição, como atingiu o custo máximo de operação
-        # if self.prob.goalTest(self.currentState):
-        # print("!!! Objetivo atingido !!!")
-        # HERE del self.libPlan[0]  # retira plano da biblioteca
+        # Funcionou ou nao, vou somar o custo da acao com o total
+        print("Custo até o momento (com a ação escolhida):", self.tempoTotal - self.tl)
 
-        # Verifica se tem vitima na posicao atual
-        self.__checkVitima()
-        # print("vitima encontrada em ", self.currentState, " id: ", victimId,
-        #   " dif de acesso: ", self.victimDiffOfAcessSensor(victimId))
+        # Verifica se precisa retorna pra base
+        return_time = self.returnPlan.getCurrentReturnTime()
+        print(f"Return time: {return_time}")
+        if not self.returnPlan.inExecution:
+            if self.tl - 1.5 <= return_time:
+                self.__enterInReturnMode()
+            else:
+                # Verifica se tem vitima na posicao atual
+                self.__checkVitima()
 
         # Define a proxima acao a ser executada
         # currentAction eh uma tupla na forma: <direcao>, <state>
@@ -159,7 +162,7 @@ class AgentExplorador:
         print(
             "Ag deliberou pela acao: ",
             result[0],
-            " o estado resultado esperado é: ",
+            ", o estado resultado esperado é: ",
             result[1],
         )
 
@@ -169,6 +172,12 @@ class AgentExplorador:
         self.expectedState = result[1]
 
         return 1
+
+    def __enterInReturnMode(self):
+        print("Entering return mode")
+        self.libPlan.pop(0)
+        self.returnPlan.initPlan()
+        self.plan = self.returnPlan
 
     def __checkVitima(self):
         """
