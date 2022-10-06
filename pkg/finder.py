@@ -43,12 +43,12 @@ class Finder:
         path = []
         st = states[pos_f[0]][pos_f[1]]
         while st.predecessor != None and st.pos != pos_i:
-            path.append(REVERSE_ACTION[st.reverse_action])
+            path.append(st.reverse_action)
             st = states[st.predecessor[0]][st.predecessor[1]]
         return states[pos_f[0]][pos_f[1]].cost, path, states
 
     def h(self, pos_i, pos_f):
-        return abs(pos_f[0] - pos_i[0])**2 + abs(pos_f[1] - pos_i[1])**2
+        return abs(pos_f[0] - pos_i[0]) + abs(pos_f[1] - pos_i[1])
 
 
 class Item:
@@ -60,4 +60,4 @@ class Item:
         self.reverse_action = reverse_action
 
     def __lt__(self, other):
-        return self.priority > other.priority
+        return self.priority < other.priority

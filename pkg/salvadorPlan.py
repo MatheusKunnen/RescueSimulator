@@ -2,6 +2,7 @@ from cgi import print_arguments
 from random import shuffle
 from constants import ACTIONS, MOVE_POS
 from finder import Finder
+from salvadorAG import SalvadorAG
 from state import State
 from constants import PosType
 
@@ -75,7 +76,7 @@ class SalvadorPlan:
     }
 
     def __init__(
-        self, map, vitimas, maxRows, maxColumns, goal, initialState, name="none", mesh="square"
+        self, map, vitimas, maxRows, maxColumns, time, initialState, name="none", mesh="square"
     ):
         """
         Define as variaveis necessárias para a utilização do random plan por um unico agente.
@@ -86,18 +87,25 @@ class SalvadorPlan:
         self.walls = []
         self.maxRows = maxRows
         self.maxColumns = maxColumns
+        self.time = time
         self.initialState = initialState
         self.currentState = initialState
-        self.goalPos = goal
         self.actions = []
         self.vitimas = vitimas
         self.should_pushback = True
         self.distances = []
         self.__init_map_graph()
         self.__calculate_victims_distance()
+        self.__init_ag()
+
+    def __init_ag(self):
+
+        # def __init__(self, map_graph, maxRows, maxCols, distances, vitimas, time, base):
+        self.ag = SalvadorAG(self.map_graph, self.maxRows, self.maxColumns, self.distances,
+                             self.vitimas, self.time, (self.initialState.row, self.initialState.col))
 
     def __init_map_graph(self):
-        # print(self.map)
+        # print(self.vitimas)
         self.map_graph = []
         # Init empty map graph
         for _ in range(self.maxRows):
@@ -117,8 +125,8 @@ class SalvadorPlan:
                         if self.map[s_row][s_col] != PosType.PAREDE:
                             self.map_graph[row][col].append(action)
         # print(self.map_graph)
-        find = Finder(self.map_graph, self.maxRows, self.maxColumns)
-        path, cost, states = find.calculate((0, 0), (6, 17))
+        # find = Finder(self.map_graph, self.maxRows, self.maxColumns)
+        # path, cost, states = find.calculate((0, 0), (6, 17))
         # print(states)
         # print(cost)
         # print(path)

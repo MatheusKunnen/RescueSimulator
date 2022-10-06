@@ -75,7 +75,7 @@ class AgentSalvador:
 
         # Cria a instancia do plano para se movimentar aleatoriamente no labirinto (sem nenhuma acao)
         self.plan = SalvadorPlan(
-            mapa, vitimas, model.rows, model.columns, self.prob.goalState, initial, "goal", self.mesh
+            mapa, vitimas, model.rows, model.columns, self.tl, initial, "goal", self.mesh
         )
 
         # adicionar crencas sobre o estado do ambiente ao plano - neste exemplo, o agente faz uma copia do que existe no ambiente.
@@ -187,6 +187,8 @@ class AgentSalvador:
 
         # Lê sinais vitais
         sinais_vitais = self.victimVitalSignalsSensor(victimId)
+        if len(sinais_vitais) <= 0:
+            return
 
         # Utiliza tempo para ler
         self.tl -= AgentSalvador.CUSTO_VITIMA
