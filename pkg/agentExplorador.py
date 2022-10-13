@@ -1,11 +1,4 @@
-# AGENTE RANDOM
-# @Author: Luan Klein e Tacla (UTFPR)
-# Agente que fixa um objetivo aleatório e anda aleatoriamente pelo labirinto até encontrá-lo.
-# Executa raciocíni on-line: percebe --> [delibera] --> executa ação --> percebe --> ...
-# from planner import Planner
-import sys
-import os
-
+# AGENTE Explorador
 # Importa Classes necessarias para o funcionamento
 from constants import get_label_gravidade
 from model import Model
@@ -18,12 +11,8 @@ from constants import PosType
 # Importa o algoritmo para o plano
 from exploradorPlan import ExploradorPlan
 
-# Importa o Planner
-# sys.path.append(os.path.join("pkg", "planner"))
 
 # Classe que define o Agente
-
-
 class AgentExplorador:
 
     CUSTO_VITIMA = 2

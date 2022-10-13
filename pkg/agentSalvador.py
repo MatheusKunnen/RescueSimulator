@@ -1,11 +1,4 @@
-# AGENTE RANDOM
-# @Author: Luan Klein e Tacla (UTFPR)
-# Agente que fixa um objetivo aleatório e anda aleatoriamente pelo labirinto até encontrá-lo.
-# Executa raciocíni on-line: percebe --> [delibera] --> executa ação --> percebe --> ...
-# from planner import Planner
-import sys
-import os
-
+# AGENTE Salvador
 # Importa Classes necessarias para o funcionamento
 from model import Model
 from constants import get_label_gravidade
@@ -17,12 +10,8 @@ from constants import PosType
 # Importa o algoritmo para o plano
 from salvadorPlan import SalvadorPlan
 
-# Importa o Planner
-# sys.path.append(os.path.join("pkg", "planner"))
 
 # Classe que define o Agente
-
-
 class AgentSalvador:
 
     CUSTO_VITIMA = 2
