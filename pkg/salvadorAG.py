@@ -86,7 +86,7 @@ class SalvadorAG:
         while c > self.time:
             n_vitimas = random.sample(n_vitimas, len(n_vitimas)-1)
             c, p = self.__calculate_chromosome_cost(n_vitimas)
-        fit = self.fit_function(n_vitimas)
+        fit = self.fit_function(n_vitimas)/c
         chromosome = Chromosome(n_vitimas, c, p, fit)
         return self.__mutate(chromosome, prob_m)
 
@@ -110,7 +110,7 @@ class SalvadorAG:
                 n_vitimas = self.__m_add_rm_vitimas(n_vitimas, 0.75)
             n_vitimas = random.sample(n_vitimas, len(n_vitimas)-1)
             c, p = self.__calculate_chromosome_cost(n_vitimas)
-        fit = self.fit_function(n_vitimas)
+        fit = self.fit_function(n_vitimas)/c
         chromosome = Chromosome(n_vitimas, c, p, fit)
         return self.__mutate(chromosome, prob_m)
 
@@ -180,7 +180,7 @@ class SalvadorAG:
             vitimas.pop()
             c, p = self.__calculate_chromosome_cost(vitimas)
             if c <= self.time:
-                fit = self.fit_function(vitimas)
+                fit = self.fit_function(vitimas)/c
                 chromosome = Chromosome(vitimas, c, p, fit)
                 valid = True
         return chromosome
@@ -202,6 +202,7 @@ class SalvadorAG:
                 ida, posa, _ = vitima_ant
                 c, p, _ = self.finder.calculate(
                     posa, pos)  # self.distances[ida][id]
+                # c, p = self.distances[ida][id]
                 cost += c
                 path.extend(p)
             else:

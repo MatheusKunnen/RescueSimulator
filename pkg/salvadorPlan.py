@@ -140,8 +140,10 @@ class SalvadorPlan:
                 pos_j, _ = self.vitimas[j]
                 cost, path, _ = find.calculate(pos_i, pos_j)
                 self.distances[i][j] = (cost, path)
-                self.distances[j][i] = (
-                    cost, [REVERSE_ACTION[a] for a in path])
+                cost, path, _ = find.calculate(pos_j, pos_i)
+                self.distances[j][i] = (cost, path)
+                # self.distances[j][i] = (
+                #     cost, [REVERSE_ACTION[a] for a in path])
 
     def setWalls(self, walls):
         # Neste modelo o agente não conhece as paredes

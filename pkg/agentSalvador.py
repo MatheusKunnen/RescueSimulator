@@ -256,7 +256,8 @@ class AgentSalvador:
                 gv[get_label_gravidade(sinais)-1] += 1
         max_grav_vitimas = 0
         for i in range(len(gv)):
-            max_grav_vitimas += (i+1) * gv[i]
+            max_grav_vitimas += (4-i) * gv[i]
+            # max_grav_vitimas += (i+1) * gv[i]
         return max_grav_vitimas
 
     def __init_map(self):
