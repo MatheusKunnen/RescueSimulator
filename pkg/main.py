@@ -56,7 +56,7 @@ def main():
     model.maze.board.posAgent
     model.maze.board.posGoal
     # Define a posição inicial do agente no ambiente - corresponde ao estado inicial
-    model.setAgentPos(config.ambiente["Base"][0], config.ambiente["Base"][0])
+    model.setAgentPos(config.ambiente["Base"][0], config.ambiente["Base"][1])
     # model.maze.board.posAgent[0], model.maze.board.posAgent[1])
     model.setGoalPos(model.maze.board.posGoal[0], model.maze.board.posGoal[1])
     model.draw()
